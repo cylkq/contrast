@@ -3,7 +3,7 @@ class contrast
 {
 	# 常用中文分词
 	private static $condition = [' ',',','，','.','。','?','？','!','！',';','；']; 
-
+	
 	# 字符串截取后的数组
 	private $arr = [];
 	
@@ -15,6 +15,9 @@ class contrast
 	
 	# 记录位置的v
 	private $v = [];
+	
+	# 是否结束状态
+	private $type = 0;
 			
 	# 开始干活了
 	public function begin($str)
@@ -28,6 +31,13 @@ class contrast
 			$this->v = [];
 			
 			$this->group();
+			
+			if($this->type == 1){
+				
+				$this->arr = $str;
+				
+				break;
+			}
 			
 		}
 		return $this->arr;
@@ -49,14 +59,14 @@ class contrast
 				
 				$this->v[$position] = $v;
 			}
-			
 		}
-		# 数组重新排序
-		sort($this->p);
-		
-		$start_v = $this->v[$this->p[0]];
 			
 		if (count($this->p) > 0){
+			
+			# 数组重新排序
+			sort($this->p);
+			
+			$start_v = $this->v[$this->p[0]];
 			
 			# 找到第一个字符的位置
 			$position = strpos($this->surplus_str,$start_v,0);
@@ -73,6 +83,10 @@ class contrast
 				
 			# 加入分词标点符号
 			array_push($this->arr, $start_v);
+		}else{
+			$this->type = 1;
 		}
+
 	}
+	
 }
